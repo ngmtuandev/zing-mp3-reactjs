@@ -1,7 +1,7 @@
 import axiosInstanse from '../axios'
 
 
-export const getInforSong = (idsong) => new Promise((resolve, reject) => {
+export const getApiInforSong = (idsong) => new Promise((resolve, reject) => {
     try {
         const rs = axiosInstanse({
             url: '/infosong',
@@ -14,7 +14,7 @@ export const getInforSong = (idsong) => new Promise((resolve, reject) => {
     }
 })
 
-export const getSong = (idsong) => new Promise((resolve, reject) => {
+export const getApiSong = (idsong) => new Promise((resolve, reject) => {
     try {
         const rs = axiosInstanse({
             url: '/song',

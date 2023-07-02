@@ -2,7 +2,7 @@ import React from 'react'
 
 const SilderBarRight = () => {
   return (
-    <div className='min-h-screen bg-[#413256]'>SilderBarRight</div>
+    <div className='min-h-screen bg-[#3c2f4f]'>SilderBarRight</div>
   )
 }
 

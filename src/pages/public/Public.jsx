@@ -1,21 +1,24 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import {SilderBarLeft, SilderBarRight, PlayMusic} from '../../components/index'
+import {SilderBarLeft, SilderBarRight, PlayMusic, Header} from '../../components/index'
 const Public = () => {
   return (
-    <div className='w-full min-h-screen flex flex-col'>
+    <div className=' w-full h-screen flex flex-col'>
       <div className='w-full h-full flex flex-auto'>
         <div className='w-[200px] flex-none'>
           <SilderBarLeft></SilderBarLeft>
         </div>
-        <div className='flex-auto min-h-screen bg-[#22133a]'>
+        <div className='flex-auto bg-[#2b1d3d]'>
+          <div className='h-[70px] flex items-center px-[40px] py-2'>
+            <Header></Header>
+          </div>
           <Outlet></Outlet>
         </div>
-        <div className='w-[270px] hidden tablet:block flex-none'>
+        <div className='w-[250px] hidden tablet:block flex-none'>
           <SilderBarRight></SilderBarRight>
         </div>
       </div>
-      <div  className='flex-none h-[100px] '>
+      <div  className=' fixed w-[100%] flex-none bottom-0'>
         <PlayMusic></PlayMusic>
       </div>
     </div>

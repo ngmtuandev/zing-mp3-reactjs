@@ -5,7 +5,7 @@ export const setSongCurrent = (idSong) => ({
     idCurSong: idSong
 })
 
-export const getSongPlay = (playSong) => ({
+export const setPlay = (playSong) => ({
     type: actionDefine.GET_PLAYSONG,
     playSong
 })

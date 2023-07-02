@@ -16,9 +16,6 @@ const Home =  () => {
 
   return (
     <div className='overflow-y-auto'>
-      <div className='h-[70px] flex items-center px-[40px] py-2'>
-        <Header></Header>
-      </div>
       <SliderBar></SliderBar>
     </div>
   )

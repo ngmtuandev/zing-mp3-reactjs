@@ -1,27 +1,27 @@
-import React, {useEffect, useState} from 'react'
-import { useSelector } from 'react-redux'
+import React, {useEffect, useState, useRef} from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import rootRedux from '../store/reducer/reducer' 
-import {getInforSong, getSong} from '../apis/apiSong'
+import {getApiInforSong, getApiSong} from '../apis/apiSong'
 import icons from '../ultis/icons'
-
+import {setPlay} from '../store/action/songCurr'
 
 const PlayMusic = () => {
-
+  const dispatch = useDispatch()
   const {BsThreeDots, AiOutlineHeart, BiSkipNext, BiSkipPrevious, BsPauseCircle, BsPlayCircle, BsShuffle, BsRepeat1} = icons
 
-  const {currSong} = useSelector(state => state.music)
+  const {currSong, playSong} = useSelector(state => state.music)
   // console.log(currSong.src)
 
   
   const [dataCurrSong, setDataCurrSong] = useState(null)
   const [song, setSong] = useState(null)
 
-  const audioPlay = new Audio(song)
+  const audioPlay = useRef(new Audio())
 
   useEffect(() => {
     const dataSong = async () => {
-      const rs = await getInforSong(currSong)
-      const rs2 = await getSong(currSong)
+      const rs = await getApiInforSong(currSong)
+      const rs2 = await getApiSong(currSong)
       console.log('detail song', rs)
       if (+rs.data.err === 0) {
         setDataCurrSong(rs?.data)
@@ -37,12 +37,27 @@ const PlayMusic = () => {
     
   }, [currSong])
 
+  console.log('src song : ', song)
+
   useEffect(() => {
-    audioPlay.play()
-  }, [currSong])
+    audioPlay.current.src = song
+    audioPlay.current.play()
+  }, [currSong, song])
+
+  const HandleStateSong = () => {
+    // console.log(song)
+      if (playSong) {
+        audioPlay.current.pause()
+        dispatch(setPlay(false))
+      }
+      else {
+        audioPlay.current.play()
+        dispatch(setPlay(true))
+      }
+  }
 
   return (
-    <div className='p-4 bg-[#6b5190] h-[80px] flex'>
+    <div className='p-4 bg-[#6b5190] h-[100px] flex'>
       <div className='w-[30%] flex-auto flex'>
         <div className='flex items-center'>
           <img src={dataCurrSong?.data?.thumbnail} className='rounded-md w-14' alt="" />
@@ -60,7 +75,9 @@ const PlayMusic = () => {
         <div className='flex text-gray-200'>
           <span><BsShuffle className='mx-2 cursor-pointer hover:text-gray-50' size='22px'></BsShuffle></span>
           <span><BiSkipPrevious className='mx-2 cursor-pointer hover:text-gray-50' size='22px'></BiSkipPrevious></span>
-          <span><BsPlayCircle className='mx-2 cursor-pointer hover:text-gray-50' size='22px'></BsPlayCircle></span>
+          <span onClick={() => HandleStateSong()}>
+            {playSong ? <BsPauseCircle className='mx-2 cursor-pointer hover:text-gray-50' size='22px'></BsPauseCircle> : <BsPlayCircle className='mx-2 cursor-pointer hover:text-gray-50' size='22px'></BsPlayCircle>}
+          </span>
           <span><BiSkipNext className='mx-2 cursor-pointer hover:text-gray-50' size='22px'></BiSkipNext></span>
           <span><BsRepeat1 className='mx-2 cursor-pointer hover:text-gray-50' size='22px'></BsRepeat1></span>
         </div>

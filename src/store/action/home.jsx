@@ -1,6 +1,6 @@
 import actionDefine from "./actionRedux"
 import { getHome } from "../../apis/apiHome"
-export const getDataHome = () => async (dispatch) => {
+export const getApiDataHome = () => async (dispatch) => {
     try {
         const apiGetData = await getHome()
         if (+apiGetData?.status === 200)

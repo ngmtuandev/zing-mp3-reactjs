@@ -12,7 +12,7 @@ const Header = () => {
       <div>
         <Search></Search>
       </div>
-      <div className='text-gray-200 ml-[50px] hover:text-gray-100 cursor-pointer'>Đăng nhập</div>
+      <div className='text-gray-200 flex ml-[80px] hover:text-gray-100 cursor-pointer'>Đăng nhập</div>
     </div>
   )
 }

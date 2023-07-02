@@ -1,7 +1,10 @@
 import React, {useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {setSongCurrent} from '../store/action/songCurr'
+import { useNavigate } from 'react-router-dom'
 const SliderBar = () => {
+
+    const navigation = useNavigate()
 
     const { HomeData } = useSelector(state => state.app)
     console.log('Home', HomeData, typeof(HomeData))
@@ -33,8 +36,16 @@ const SliderBar = () => {
 
     const dispatch = useDispatch()
 
-    const handlePlaySong = (idSong) => {
-      dispatch(setSongCurrent(idSong))
+    const handlePlaySong = (item) => {
+      if (item?.type === 1) {
+        dispatch(setSongCurrent(item.encodeId))
+      }
+      else if (item?.type === 4) {  
+        const linkPlayList = item?.link.split('.')[0]
+        navigation(linkPlayList)
+        console.log(linkPlayList)
+      }
+      // console.log(item)
     }
 
     return (
@@ -43,7 +54,7 @@ const SliderBar = () => {
         HomeData?.items?.map(item => (
           <img src={item.banner} key={item.encodeId} alt='banner-song'
           className='transition-all duration-200 img-item flex-1 object-contain w-[227px] rounded-md'
-          onClick={() =>  handlePlaySong(item.encodeId)}
+          onClick={() =>  handlePlaySong(item)}
           ></img>
         ))
       }

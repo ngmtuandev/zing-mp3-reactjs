@@ -4,7 +4,7 @@ import {optionSidebar} from '../ultis/optionMenu'
 const SilderBarLeft = () => {
 
   return (
-    <div className='flex min-h-screen flex-col bg-[#413256]'>
+    <div className='flex min-h-screen flex-col bg-[#3c2f4f]'>
       <div className='pt-4 pb-4 pl-5 w-full flex justify-start items-center'>
         <span className='text-blue-400 text-2xl'>NHẠC Ở ĐÂY</span>
       </div>
