@@ -4,6 +4,7 @@ import {FaChartLine} from   'react-icons/fa'
 import {AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineHeart} from 'react-icons/ai'
 import {BiSearchAlt, BiSkipNext, BiSkipPrevious } from 'react-icons/bi'
 import {BsThreeDots, BsRepeat1, BsPauseCircle, BsShuffle, BsPlayCircle } from 'react-icons/bs'
+import {GiMusicalNotes} from 'react-icons/gi'
 
 const icons = {
     MdLibraryMusic,
@@ -17,7 +18,8 @@ const icons = {
     BsThreeDots,
     BsRepeat1,BiSkipNext, BiSkipPrevious, 
     BsPlayCircle, BsShuffle,
-    BsPauseCircle
+    BsPauseCircle,
+    GiMusicalNotes
 
 }
 

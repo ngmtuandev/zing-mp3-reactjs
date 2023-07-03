@@ -15,6 +15,7 @@ const PlayListItems = ({song}) => {
                 <div 
                 onClick={() => {
                     dispatch(setSongCurrent(item?.encodeId))
+                    // dispatch(setPlay(true))
                 }}
                 key={index} className=' pr-2 flex justify-between mb-5 hover:bg-[#787878] h-[100%]'>
                     <div className='flex w-[200px] items-center hover:text-white cursor-pointer'>

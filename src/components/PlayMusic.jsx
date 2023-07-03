@@ -14,7 +14,7 @@ const PlayMusic = () => {
   
 
   const dispatch = useDispatch()
-  const {BsThreeDots, AiOutlineHeart, BiSkipNext, BiSkipPrevious, BsPauseCircle, BsPlayCircle, BsShuffle, BsRepeat1} = icons
+  const {GiMusicalNotes, BsThreeDots, AiOutlineHeart, BiSkipNext, BiSkipPrevious, BsPauseCircle, BsPlayCircle, BsShuffle, BsRepeat1} = icons
 
   const {currSong, playSong} = useSelector(state => state.music)
   // console.log(currSong.src)
@@ -27,6 +27,7 @@ const PlayMusic = () => {
   const [realTime, setRealTime] = useState(0)
 
   const load = useRef()
+  const largeload = useRef()
 
   useEffect(() => {
     const dataSong = async () => {
@@ -44,6 +45,12 @@ const PlayMusic = () => {
         setAudio(new Audio(rs2?.data.data['128']))
         
         setRealTime(0)
+      }
+
+      if (+rs.data.err !== 0 || rs2.data.err !== 0)
+      {
+        setRealTime(0)
+        setAudio(new Audio())
       }
     }
     // console.log('songgg : ', song)
@@ -86,7 +93,17 @@ const PlayMusic = () => {
     else {
       setTimeLoad &&  clearInterval(setTimeLoad)
     }
-  }, [playSong])
+  }, [playSong, audio])
+
+  const handleSpaceLoad = (e) => {
+    console.log(e)
+    console.log(largeload.current.getBoundingClientRect().left)
+    const percentLoad = Math.round((e.clientX - largeload.current.getBoundingClientRect().left) * 10000 / largeload.current.getBoundingClientRect().width) / 100
+    load.current.style.cssText = `width: ${ percentLoad }%`
+    audio.currentTime = percentLoad * dataCurrSong?.data?.duration / 100
+    const timeLoadProgress = Math.round(percentLoad * dataCurrSong?.data?.duration / 100)
+    setRealTime(timeLoadProgress)
+  }
 
   return (
     <div className='p-4 bg-[#453162] h-[100px] flex'>
@@ -114,10 +131,14 @@ const PlayMusic = () => {
           <span><BsRepeat1 className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BsRepeat1></span>
         </div>
         <div>
-          <div className='w-[450px] relative h-[5px] bg-slate-400 rounded-md mt-4'>
+          <div ref={largeload} className='w-[450px] relative cursor-pointer h-[5px] bg-slate-400 rounded-md mt-4'
+          onClick={(e) => handleSpaceLoad(e)}
+          >
             <div ref={load} className='absolute h-[5px] top-0 left-0 rounded-md bg-slate-50'></div>
           </div>
-          <div className='flex justify-center mt-2 text-gray-300'>{moment.utc(realTime*1000).format('mm:ss')}</div>
+          <div className='flex justify-center mt-2 text-gray-300'><GiMusicalNotes className='mr-2'></GiMusicalNotes>
+          {moment.utc(realTime*1000).format('mm:ss')}
+          </div>
         </div>
       </div>
       <div className='w-[20%] flex-auto'>Voluum</div>

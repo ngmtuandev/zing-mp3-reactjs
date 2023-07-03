@@ -3,7 +3,8 @@ const path = {
     HOME: '/',
     LOGIN: 'login',
     DOT: '*',
-    PLAYLIST__NAMESONG__IDSONG: '/album/:namesong/:idsong'
+    ALBUM__NAMESONG__IDSONG: '/album/:namesong/:idsong',
+    PLAYLIST__NAMESONG__IDSONG: '/playlist/:namesong/:idsong'
 }
 
 export default path

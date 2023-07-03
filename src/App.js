@@ -23,6 +23,7 @@ function App() {
           <Route path={path.LOGIN} element={<Login></Login>}></Route>
           <Route path={path.DOT} element={<Home></Home>}></Route>
           <Route path={path.PLAYLIST__NAMESONG__IDSONG} element={<PlayListDetail></PlayListDetail>}></Route>
+          <Route path={path.ALBUM__NAMESONG__IDSONG} element={<PlayListDetail></PlayListDetail>}></Route>
         </Route>
       </Routes>
     </div>
