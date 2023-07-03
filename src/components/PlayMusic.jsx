@@ -5,6 +5,9 @@ import {getApiInforSong, getApiSong} from '../apis/apiSong'
 import icons from '../ultis/icons'
 import {setPlay, setSongCurrent} from '../store/action/songCurr'
 import moment from 'moment'
+import RotateLoader from "react-spinners/RotateLoader";
+import {setStateRight} from '../store/action/sliderRight'
+
 
 
 var setTimeLoad 
@@ -14,11 +17,16 @@ const PlayMusic = () => {
   
 
   const dispatch = useDispatch()
-  const {GiMusicalNotes, BsThreeDots, AiOutlineHeart, BiSkipNext, BiSkipPrevious, BsPauseCircle, BsPlayCircle, BsShuffle, BsRepeat1} = icons
+  const {GiMusicalNotes, BsThreeDots, AiOutlineHeart, BiSkipNext, BiSolidPlaylist,
+    BiSkipPrevious, BsPauseCircle, BsPlayCircle, BsShuffle, BsRepeat1, BsFillVolumeDownFill, BsFillVolumeMuteFill,
+    BsFillVolumeUpFill} = icons
 
   const {currSong, playSong, playlist} = useSelector(state => state.music)
   // console.log(currSong.src)
+  const {stateRight} = useSelector(state => state.app)
+  console.log('state right : ', stateRight)
 
+  const [stateLoad, setStateLoad] = useState(true)
   
   const [dataCurrSong, setDataCurrSong] = useState(null)
 
@@ -26,14 +34,18 @@ const PlayMusic = () => {
 
   const [realTime, setRealTime] = useState(0)
 
+  const [stateVolume, setStateVolume] = useState(100)
+
   const load = useRef()
   const largeload = useRef()
 
   useEffect(() => {
     const dataSong = async () => {
+      setStateLoad(false)
       const rs = await getApiInforSong(currSong)
       const rs2 = await getApiSong(currSong)
       console.log('detail song', rs)
+      setStateLoad(true)
       if (+rs.data.err === 0) {
         audio.pause()
         setDataCurrSong(rs?.data)
@@ -80,6 +92,9 @@ const PlayMusic = () => {
   }
 
   useEffect(() => {
+
+    setTimeLoad &&  clearInterval(setTimeLoad)
+
     if (playSong) {
       setTimeLoad = setInterval(()=>{
         // let time = audioTime
@@ -89,9 +104,6 @@ const PlayMusic = () => {
         setRealTime(Math.round(audio.currentTime))
         load.current.style.cssText = `width: ${timeload}%`
       }, 100)
-    }
-    else {
-      setTimeLoad &&  clearInterval(setTimeLoad)
     }
   }, [playSong, audio])
 
@@ -128,7 +140,7 @@ const PlayMusic = () => {
   const prevSong = () => {
     var indexCurSong
     // console.log('data curr', dataCurrSong)
-    playlist.forEach((item, index) => {
+    playlist?.forEach((item, index) => {
       // console.log('data next',item, index)
       if (item?.album?.encodeId === dataCurrSong?.data?.album?.encodeId)
       {
@@ -141,6 +153,34 @@ const PlayMusic = () => {
     // console.log('play list',playlist[indexCurSong+1])
     dispatch(setSongCurrent(playlist[indexCurSong-1]?.encodeId))
     dispatch(setPlay(true))
+  }
+
+  const handleShuff = () => {
+    const indexShuff = Math.round(Math.random() * playlist.length ) - 1
+    dispatch(setSongCurrent(playlist[indexShuff].encodeId))
+    dispatch(setPlay(true))
+  }
+
+  useEffect(() => {
+    const isEnd = () =>
+    { 
+      nextSong() // mỗi lần hết => next song là audio thay đổi => chạy hàm
+      dispatch(setPlay(true))
+    }
+
+    audio.addEventListener('ended', isEnd)
+
+  }, [audio])
+
+  const handleStateRight = () => {
+    dispatch(setStateRight(!stateRight))
+  }
+
+  const setVolume = (e) => {
+    setStateVolume(e.target.value)
+    // console.log(stateVolume)
+    audio.volume = e.target.value / 100
+    // console.log(audio.volume)
   }
 
   return (
@@ -158,14 +198,19 @@ const PlayMusic = () => {
           <BsThreeDots className='text-gray-100 mx-2 text-[19px] hover:text-gray-200 cursor-pointer'></BsThreeDots>
         </div>
       </div>
-      <div className='w-[55%] flex-auto flex flex-col justify-center ml-[-80px] items-center '>
+      <div className='w-[50%] flex-auto flex flex-col justify-center items-center '>
         <div className='flex text-gray-200'>
-          <span title='Phát ngẫu nhiên'><BsShuffle className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BsShuffle></span>
+          <span title='Phát ngẫu nhiên'
+            onClick={() => handleShuff()}
+          ><BsShuffle className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BsShuffle></span>
           <span onClick={() => prevSong()}>
             <BiSkipPrevious className={playlist ? 'mx-2 cursor-pointer hover:text-white' : 'mx-2 text-gray-500'} size='24px'></BiSkipPrevious>
           </span>
           <span onClick={() => HandleStateSong()}>
-            {playSong ? <BsPauseCircle className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BsPauseCircle> : <BsPlayCircle className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BsPlayCircle>}
+            {!stateLoad ? <div className='mx-4'><RotateLoader color="#dedede" size={8} margin={-15}></RotateLoader> </div>
+              : playSong ? <BsPauseCircle className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BsPauseCircle> 
+              : <BsPlayCircle className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BsPlayCircle>
+            } 
           </span>
           <span onClick={() => nextSong()}>
             <BiSkipNext className={playlist ? 'mx-2 cursor-pointer hover:text-white' : 'mx-2 text-gray-500'} size='24px'></BiSkipNext>
@@ -180,12 +225,32 @@ const PlayMusic = () => {
           >
             <div ref={load} className='absolute h-[5px] top-0 left-0 rounded-md bg-slate-50'></div>
           </div>
-          <div className='flex justify-center mt-2 text-gray-300'><GiMusicalNotes className='mr-2'></GiMusicalNotes>
-          {moment.utc(realTime*1000).format('mm:ss')}
+          <div className='flex justify-center mt-2 text-gray-300'>
+          {moment.utc(realTime*1000).format('m m : s s')}
           </div>
         </div>
       </div>
-      <div className='w-[20%] flex-auto'>Voluum</div>
+      <div className='w-[25%] flex-auto flex items-center justify-center gap-7'>
+        <div className='flex items-center gap-3'> 
+          <div className='flex gap-3'>
+
+            {+audio.volume === 0 ? <BsFillVolumeMuteFill size={26} className='text-gray-100 cursor-pointer'></BsFillVolumeMuteFill> 
+            : <BsFillVolumeMuteFill size={26} className='text-gray-500 hover:text-gray-100 cursor-pointer'></BsFillVolumeMuteFill>}
+            {+audio.volume > 0.5 ? <BsFillVolumeUpFill size={26} className='text-gray-300'></BsFillVolumeUpFill>
+             :  +audio.volume !== 0 ? <BsFillVolumeDownFill size={26} className='text-gray-300'></BsFillVolumeDownFill>
+             : <BsFillVolumeDownFill size={26} className='text-gray-500'></BsFillVolumeDownFill>
+            }
+            
+          </div>
+          <input className='w-[100px] cursor-pointer' type="range" 
+        min={0} step={1} max={100} onChange={setVolume} value={stateVolume} />
+        </div>
+        <div className='p-2 bg-[#6e588f] hover:bg-[#654e87] rounded-md cursor-pointer'
+          onClick={() => handleStateRight()}
+        >
+          <BiSolidPlaylist className='text-[24px] text-gray-100'></BiSolidPlaylist>
+        </div>
+      </div>
     </div>
   )
 }
