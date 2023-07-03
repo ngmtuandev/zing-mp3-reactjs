@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import rootRedux from '../store/reducer/reducer' 
 import {getApiInforSong, getApiSong} from '../apis/apiSong'
 import icons from '../ultis/icons'
-import {setPlay} from '../store/action/songCurr'
+import {setPlay, setSongCurrent} from '../store/action/songCurr'
 import moment from 'moment'
 
 
@@ -16,7 +16,7 @@ const PlayMusic = () => {
   const dispatch = useDispatch()
   const {GiMusicalNotes, BsThreeDots, AiOutlineHeart, BiSkipNext, BiSkipPrevious, BsPauseCircle, BsPlayCircle, BsShuffle, BsRepeat1} = icons
 
-  const {currSong, playSong} = useSelector(state => state.music)
+  const {currSong, playSong, playlist} = useSelector(state => state.music)
   // console.log(currSong.src)
 
   
@@ -60,7 +60,7 @@ const PlayMusic = () => {
   }, [currSong])
 
   // console.log('src song : ', song)
-  console.log('data current song : ', dataCurrSong)
+  // console.log('data current song : ', dataCurrSong)
 
   useEffect(() => {
     audio.pause()
@@ -96,13 +96,51 @@ const PlayMusic = () => {
   }, [playSong, audio])
 
   const handleSpaceLoad = (e) => {
-    console.log(e)
-    console.log(largeload.current.getBoundingClientRect().left)
+    // console.log(e)
+    // console.log(largeload.current.getBoundingClientRect().left)
     const percentLoad = Math.round((e.clientX - largeload.current.getBoundingClientRect().left) * 10000 / largeload.current.getBoundingClientRect().width) / 100
     load.current.style.cssText = `width: ${ percentLoad }%`
     audio.currentTime = percentLoad * dataCurrSong?.data?.duration / 100
     const timeLoadProgress = Math.round(percentLoad * dataCurrSong?.data?.duration / 100)
     setRealTime(timeLoadProgress)
+  }
+
+  // next && prev
+
+  const nextSong = () => {
+    var indexCurSong
+    // console.log('data curr', dataCurrSong)
+    playlist.forEach((item, index) => {
+      // console.log('data next',item, index)
+      if (item?.album?.encodeId === dataCurrSong?.data?.album?.encodeId)
+      {
+        indexCurSong = index
+      }
+      // console.log('index data current song', indexCurSong)
+      // dispatch(setPlay(false))
+      // audio.pause()      
+    })
+    // console.log('play list',playlist[indexCurSong+1])
+    dispatch(setSongCurrent(playlist[indexCurSong+1]?.encodeId))
+    dispatch(setPlay(true))
+  }
+
+  const prevSong = () => {
+    var indexCurSong
+    // console.log('data curr', dataCurrSong)
+    playlist.forEach((item, index) => {
+      // console.log('data next',item, index)
+      if (item?.album?.encodeId === dataCurrSong?.data?.album?.encodeId)
+      {
+        indexCurSong = index
+      }
+      // console.log('index data current song', indexCurSong)
+      // dispatch(setPlay(false))
+      // audio.pause()      
+    })
+    // console.log('play list',playlist[indexCurSong+1])
+    dispatch(setSongCurrent(playlist[indexCurSong-1]?.encodeId))
+    dispatch(setPlay(true))
   }
 
   return (
@@ -122,13 +160,19 @@ const PlayMusic = () => {
       </div>
       <div className='w-[55%] flex-auto flex flex-col justify-center ml-[-80px] items-center '>
         <div className='flex text-gray-200'>
-          <span><BsShuffle className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BsShuffle></span>
-          <span><BiSkipPrevious className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BiSkipPrevious></span>
+          <span title='Phát ngẫu nhiên'><BsShuffle className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BsShuffle></span>
+          <span onClick={() => prevSong()}>
+            <BiSkipPrevious className={playlist ? 'mx-2 cursor-pointer hover:text-white' : 'mx-2 text-gray-500'} size='24px'></BiSkipPrevious>
+          </span>
           <span onClick={() => HandleStateSong()}>
             {playSong ? <BsPauseCircle className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BsPauseCircle> : <BsPlayCircle className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BsPlayCircle>}
           </span>
-          <span><BiSkipNext className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BiSkipNext></span>
-          <span><BsRepeat1 className='mx-2 cursor-pointer hover:text-gray-50' size='24px'></BsRepeat1></span>
+          <span onClick={() => nextSong()}>
+            <BiSkipNext className={playlist ? 'mx-2 cursor-pointer hover:text-white' : 'mx-2 text-gray-500'} size='24px'></BiSkipNext>
+          </span>
+          <span title='Bật vòng lặp' className='cursor-pointer'>
+            <BsRepeat1  size='24px'></BsRepeat1>
+          </span>
         </div>
         <div>
           <div ref={largeload} className='w-[450px] relative cursor-pointer h-[5px] bg-slate-400 rounded-md mt-4'

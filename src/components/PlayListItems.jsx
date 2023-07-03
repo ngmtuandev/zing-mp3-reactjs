@@ -2,16 +2,19 @@ import moment from 'moment'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import {setPlay, setSongCurrent} from '../store/action/songCurr'
+import { useSelector } from 'react-redux'
 
 const PlayListItems = ({song}) => {
     console.log('song item : ', song)
 
     const dispatch = useDispatch()
 
+    const {playlist} = useSelector(item => item.music)
+
   return (
     <div className='mt-4 w-[100%] ' >
         {
-            song?.map((item, index) => (
+            playlist?.map((item, index) => (
                 <div 
                 onClick={() => {
                     dispatch(setSongCurrent(item?.encodeId))

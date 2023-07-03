@@ -4,9 +4,11 @@ import {getApiPlayList} from '../apis/apiPlaylist'
 import moment from 'moment/moment'
 import PlayList from './PlayList'
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useDispatch } from 'react-redux'
+import {setPlayList} from '../store/action/playlist'
 
 const PlayListDetail = () => {
-
+    const dispatch = useDispatch()
     const params = useParams()
     const {namesong, idsong} = params
     // console.log('test', namesong, idsong)
@@ -19,6 +21,7 @@ const PlayListDetail = () => {
             console.log('playlist', rs)
             if (+rs.status === 200) {
                 setDataPlaylist(rs?.data?.data)
+                dispatch(setPlayList(rs?.data?.data?.song?.items))
             }
         }
         fetchApiPlayList()

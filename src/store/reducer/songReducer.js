@@ -2,7 +2,8 @@ import actionDefine from '../action/actionRedux'
 
 const initState = {
     currSong: null,
-    playSong: false
+    playSong: false,
+    playlist: null
 }
 
 const songReducer = (state = initState, action) => {
@@ -17,6 +18,11 @@ const songReducer = (state = initState, action) => {
             return {
                 ...state,
                 playSong: action.playSong
+            }
+        case actionDefine.GET_PLAYLIST:
+            return {
+                ...state,
+                playlist: action.playlist
             }
         
         default:
