@@ -226,7 +226,7 @@ const PlayMusic = () => {
             <div ref={load} className='absolute h-[5px] top-0 left-0 rounded-md bg-slate-50'></div>
           </div>
           <div className='flex justify-center mt-2 text-gray-300'>
-          {moment.utc(realTime*1000).format('m m : s s')}
+          {moment.utc(realTime*1000).format('mm:ss')}
           </div>
         </div>
       </div>

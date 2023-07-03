@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {getApiPlayList} from '../apis/apiPlaylist'
+import RingLoader from "react-spinners/RingLoader";
 import moment from 'moment/moment'
 import PlayList from './PlayList'
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch } from 'react-redux'
-import {setPlayList} from '../store/action/playlist'
+import {setPlayList, setLoadPlayList} from '../store/action/playlist'
+import { useSelector } from 'react-redux'
+
 
 const PlayListDetail = () => {
     const dispatch = useDispatch()
@@ -14,10 +17,15 @@ const PlayListDetail = () => {
     // console.log('test', namesong, idsong)
 
     const [dataPlaylist, setDataPlaylist] = useState(null)
+    const {isLoadPlayList} = useSelector(state => state.app)
+    console.log('isLoadPlayList', isLoadPlayList)
 
     useEffect(() => {
         const fetchApiPlayList = async () => {
+            dispatch(setLoadPlayList(false))
+            console.log('isLoad 1 : ', isLoadPlayList)
             const rs = await getApiPlayList(idsong)
+            dispatch(setLoadPlayList(true))
             console.log('playlist', rs)
             if (+rs.status === 200) {
                 setDataPlaylist(rs?.data?.data)
@@ -30,7 +38,8 @@ const PlayListDetail = () => {
 
   return (
     
-    <div className='flex gap-7 px-6 mt-6 w-full h-full'>
+    <div className='flex gap-7 relative px-6 mt-6 w-full h-full'>
+        {!isLoadPlayList && <div className='w-[100%] absolute flex justify-center items-center mt-[100px]'><RingLoader color="#695587" size={118}></RingLoader></div>}
         <div className='w-[20%] text-gray-300 flex flex-col'>
             <div>
                 <img className='rounded-md w-full' src={dataPlaylist?.thumbnail} alt="" />

@@ -1,11 +1,14 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import RingLoader from "react-spinners/RingLoader";
 import {SilderBarLeft, SilderBarRight, PlayMusic, Header} from '../../components/index'
 import { useSelector } from 'react-redux'
 const Public = () => {
-  const {stateRight} = useSelector(state => state.app)
+  const {stateRight, isLoadHome} = useSelector(state => state.app)
+  console.log('isLoadHome : ', isLoadHome)
   return (
-    <div className=' w-full h-screen flex flex-col'>
+    <div className=' w-full relative h-screen flex flex-col'>
+      {!isLoadHome && <div className='w-[100%] absolute flex justify-center items-center mt-[200px] ml-[-20px]'><RingLoader color="#695587" size={118}></RingLoader></div>}
       <div className='w-full h-full flex flex-auto'>
         <div className='w-[200px] flex-none'>
           <SilderBarLeft></SilderBarLeft>
