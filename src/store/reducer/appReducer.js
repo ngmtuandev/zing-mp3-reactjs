@@ -9,7 +9,8 @@ const initState = {
     isLoadPlayList: false,
     isLoadHome: false,
     isChoose: 0,
-    newRelease: []
+    newRelease: [],
+    dataSearch: []
 }
 
 const appReducer = (state = initState, action) => {
@@ -43,6 +44,11 @@ const appReducer = (state = initState, action) => {
             return {
                 ...state,
                 isChoose: action.isChoose
+            }
+        case actionDefine.GET_SEARCH:
+            return {
+                ...state, 
+                dataSearch: action.dataSearch
             }
         default:
             return state

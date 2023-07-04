@@ -6,6 +6,7 @@ import {getApiDataHome} from './store/action/home'
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import PlayListDetail from "./components/PlayListDetail";
+import {SearchAll} from "./components/index"
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
           <Route path={path.PLAYLIST__NAMESONG__IDSONG} element={<PlayListDetail></PlayListDetail>}></Route>
           <Route path={path.ALBUM__NAMESONG__IDSONG} element={<PlayListDetail></PlayListDetail>}></Route>
           <Route path={path.LISTCHOOSE__NAMESONG__IDSONG} element={<PlayListDetail></PlayListDetail>}></Route>
+          <Route path={path.SEARCH_ALL} element={<SearchAll></SearchAll>}></Route>
         </Route>
       </Routes>
     </div>

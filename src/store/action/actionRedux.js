@@ -7,6 +7,7 @@ const actionDefine = {
     IS_LOADPLAYLIST: 'IS_LOADPLAYLIST',
     IS_LOADHOME: 'IS_LOADHOME',
     SET_CHOOSE: 'SET_CHOOSE',
+    GET_SEARCH: 'GET_SEARCH',
 }
 
 export default actionDefine
