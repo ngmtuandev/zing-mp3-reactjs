@@ -48,7 +48,7 @@ const PlayListDetail = () => {
             <span className='text-[12px] flex justify-center'>Cập nhập: {moment.unix(dataPlaylist?.contentLastUpdate).format("DD/MM/YYYY")}</span>
             <span className='text-[12px] flex justify-center'>Lượt thích: {dataPlaylist?.like}</span>
         </div>
-        <Scrollbars style={{ width: '100%', height: '80%' }}>
+        <Scrollbars autoHide style={{ width: '100%', height: '80%' }}>
         <div className='flex-auto'>
             <PlayList song = {dataPlaylist?.song?.items} durationCount = {dataPlaylist?.song?.totalDuration} ></PlayList>
         </div>

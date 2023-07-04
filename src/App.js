@@ -24,6 +24,7 @@ function App() {
           <Route path={path.DOT} element={<Home></Home>}></Route>
           <Route path={path.PLAYLIST__NAMESONG__IDSONG} element={<PlayListDetail></PlayListDetail>}></Route>
           <Route path={path.ALBUM__NAMESONG__IDSONG} element={<PlayListDetail></PlayListDetail>}></Route>
+          <Route path={path.LISTCHOOSE__NAMESONG__IDSONG} element={<PlayListDetail></PlayListDetail>}></Route>
         </Route>
       </Routes>
     </div>

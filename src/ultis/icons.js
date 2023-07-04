@@ -3,7 +3,7 @@ import {PiChartDonutFill} from 'react-icons/pi'
 import {FaChartLine} from   'react-icons/fa'
 import {AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineHeart} from 'react-icons/ai'
 import {BiSearchAlt, BiSkipNext, BiSkipPrevious, BiSolidPlaylist } from 'react-icons/bi'
-import {BsThreeDots, BsRepeat1, BsPauseCircle, BsShuffle, BsPlayCircle, BsFillVolumeUpFill, BsFillVolumeMuteFill, BsFillVolumeDownFill } from 'react-icons/bs'
+import {BsThreeDots, BsPlayCircle, BsPlayFill, BsPlayCircleFill, BsRepeat1, BsPauseCircle, BsShuffle, BsFillVolumeUpFill, BsFillVolumeMuteFill, BsFillVolumeDownFill } from 'react-icons/bs'
 import {GiMusicalNotes} from 'react-icons/gi'
 
 const icons = {
@@ -23,8 +23,9 @@ const icons = {
     BiSolidPlaylist,
     BsFillVolumeDownFill,
     BsFillVolumeMuteFill,
-    BsFillVolumeUpFill
-
+    BsFillVolumeUpFill,
+    BsPlayFill,
+    BsPlayCircleFill
 }
 
 export default icons

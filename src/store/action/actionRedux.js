@@ -6,6 +6,7 @@ const actionDefine = {
     GET_STATE_RIGHT: 'GET_STATE_RIGHT',
     IS_LOADPLAYLIST: 'IS_LOADPLAYLIST',
     IS_LOADHOME: 'IS_LOADHOME',
+    SET_CHOOSE: 'SET_CHOOSE',
 }
 
 export default actionDefine

@@ -7,7 +7,9 @@ const initState = {
     singerTrend: [],
     radio: [],
     isLoadPlayList: false,
-    isLoadHome: false
+    isLoadHome: false,
+    isChoose: 0,
+    newRelease: []
 }
 
 const appReducer = (state = initState, action) => {
@@ -20,6 +22,7 @@ const appReducer = (state = initState, action) => {
                 chill: action.dataHome?.find(item => item.sectionId === 'hEditorTheme') || null,
                 singerTrend: action.dataHome?.find(item => item.sectionId === 'hArtistTheme') || null,
                 radio: action.dataHome?.find(item => item.sectionId === 'hLiveRadio') || null,
+                newRelease: action.dataHome?.find(item => item.sectionType === 'new-release') || null,
             }
         case actionDefine.GET_STATE_RIGHT: 
             return {
@@ -35,6 +38,11 @@ const appReducer = (state = initState, action) => {
             return {
                 ...state,
                 isLoadHome: action.isLoadHome
+            }
+        case actionDefine.SET_CHOOSE:
+            return {
+                ...state,
+                isChoose: action.isChoose
             }
         default:
             return state
